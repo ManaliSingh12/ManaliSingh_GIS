@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Multi-Criteria Analysis &amp; Seismic Risk Vulnerability</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f7fa;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --accent-light:#dbeafe;
+      --border:#000000; /* Updated: Solid black borders */
+      --shadow:0 10px 28px rgba(0,0,0,0.06);
+      --radius:20px;
+      --max-width:1150px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+      height:auto;
+    }
+
+    a{
+      text-decoration:none;
+      color:var(--accent);
+    }
+
+    .container{
+      width:min(92%, var(--max-width));
+      margin:auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size:1.05rem;
+    }
+
+    .back-link{
+      color:var(--muted);
+      transition:0.2s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+    .hero{
+      padding:6rem 0 4rem;
+    }
+
+    .hero h1{
+      font-family:'Merriweather',serif;
+      font-size:clamp(2.4rem,6vw,4.2rem);
+      line-height:1.15;
+      margin-bottom:1.3rem;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:800px;
+      font-size:1.1rem;
+    }
+
+    .hero-meta{
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+
+    .meta-item{
+      background:var(--accent-light);
+      color:var(--accent);
+      padding:0.6rem 1rem;
+      border-radius:999px;
+      font-size:0.92rem;
+      font-weight:500;
+    }
+
+    /* =========================
+       FEATURE IMAGE
+    ========================== */
+    .feature-image-wrapper {
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:5rem;
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
+    section{
+      padding-bottom:4rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:3rem;
+      align-items:start;
+    }
+
+    .content-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2.2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .content-card h2{
+      font-family:'Merriweather',serif;
+      margin-bottom:1.2rem;
+      font-size:1.6rem;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card h3{
+      margin:1.5rem 0 0.5rem 0;
+      font-size:1.2rem;
+      color:var(--text);
+    }
+
+    .content-card p{
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card ul{
+      padding-left:1.5rem;
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card li{
+      margin-bottom:0.4rem;
+    }
+
+    .map-embed {
+      margin:1.5rem 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:#fdfdfd;
+    }
+
+    .map-caption {
+      font-size:0.85rem;
+      color:var(--muted);
+      padding:0.6rem 1rem;
+      background:var(--bg);
+      border-top:1px solid var(--border);
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+    .sidebar-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .sidebar-card h3{
+      margin-bottom:1rem;
+      font-size:1.1rem;
+    }
+
+    .sidebar-card p{
+      color:var(--muted);
+      margin-bottom:0.7rem;
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+    .button{
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.95rem 1.4rem;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      transition:0.2s ease;
+      text-align:center;
+      width:100%;
+    }
+
+    .button:hover{
+      opacity:0.92;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+    footer{
+      padding:4rem 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+    @media(max-width:900px){
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+      nav{
+        flex-direction:column;
+        gap:1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+        <a href="Student_website_template.html" class="back-link">
+          &larr; Back to Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Multi-Criteria Analysis &amp; Spatial Vulnerability</h1>
+      <p>
+        Evaluating complex, multi-layered geographic realities by integrating GIS and Multi-Criteria Analysis (MCA) to analyze structural and demographic seismic risk.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">GIS Analysis</div>
+        <div class="meta-item">Multi-Criteria Analysis (MCA)</div>
+        <div class="meta-item">Spatial Risk Modeling</div>
+        <div class="meta-item">Assignment 6</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="feature-image-wrapper">
+      <img src="Portugal_figure5.png" alt="Social vulnerability to seismic risk on Vila Franca do Campo" />
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="content-grid">
+
+        <div>
+
+          <div class="content-card">
+            <h2>Part 1: What is Multi-Criteria Analysis (MCA)?</h2>
+            <p><strong>Understanding Multi-Criteria Analysis (MCA) in GIS</strong></p>
+            <p>
+              When urban planners, conservationists or environmental scientists need to make big real-world decisions like where to plant a new forest, build a hospital or protect an ecosystem they can rarely rely on just one map. A single factor like "flat land" isn't enough. They have to balance dozens of competing environmental, social, and economic needs.
+            </p>
+            <p>
+              This is where Multi-Criteria Analysis (MCA) comes in. MCA is a structured decision-making method used to evaluate and rank multiple, often conflicting choices. When integrated with Geographic Information Systems (GIS), MCA transforms from a theoretical checklist into a powerful spatial tool. It allows us to take completely different layers of geographic data (like soil quality, population density, and road locations), standardize them, assign weights based on priority and stack them together to find the absolute best location for a specific goal.
+            </p>
+
+            <h3>Why is MCA Value-Added to GIS?</h3>
+            <p>
+              Without MCA, GIS map layers are just independent stacks of information. You can overlay them, but you can't easily rank them. MCA adds massive value to spatial analysis in three ways:
+            </p>
+            <ul>
+              <li><strong>Handles Complexity gracefully:</strong> It allows completely different types of data (such as qualitative legal zoning laws and quantitative air pollution measurements) to speak the same language.</li>
+              <li><strong>Reduces Human Bias:</strong> Instead of guessing which location "feels" right, planners use mathematical frameworks like the Analytic Hierarchy Process (AHP) to systematically calculate the exact importance of each layer.</li>
+              <li><strong>Creates Actionable Suitability Maps:</strong> The end product of a spatial MCA is a single, intuitive heat map ranking zones from "highly suitable" to "completely unsuitable," giving decision-makers a clear visual path forward.</li>
+            </ul>
+
+            <h3>Spatial MCA Applications</h3>
+            <p>
+              Spatial MCA acts as a matching engine between human goals and geographic realities. It excels at answering complex, multi-layered spatial questions:
+            </p>
+            <ul>
+              <li>Where are the most suitable locations for new infrastructure? (Balancing cheap land, flat terrain and proximity to utility grids).</li>
+              <li>Where should nature-based climate adaptations be prioritized? (Targeting areas with high flood risks, low existing vegetation and vulnerable populations).</li>
+              <li>Which areas are most vulnerable to environmental degradation? (Combining high soil erosion risk, steep slopes and intense agricultural activity).</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h2>Part 2: Review a Scholarly Application of MCA</h2>
+            <p><strong>Structural and Demographic Risk on São Miguel Island (Azores, Portugal)</strong></p>
+            <p>
+              <strong>APA Citation:</strong><br>
+              Rashed, T., Weeks, J., &amp; Martins, V. N. (2012). Social vulnerability assessment to seismic risk using multicriteria analysis: the case study of Vila Franca do Campo (São Miguel Island, Azores, Portugal). <em>Natural Hazards</em>, 62(2), 385-404. https://doi.org/10.1007/s11069-012-0083-3 
+            </p>
+            
+            <h3>1. The Problem Being Addressed</h3>
+            <p>
+              The Azores archipelago in Portugal is located in an incredibly active tectonic region, making it highly susceptible to destructive earthquakes and secondary hazards like landslides. Traditional seismic risk assessments usually focus heavily on physical geology and structural engineering essentially predicting which buildings will fall down. However, the researchers argued that this approach leaves out the human element.
+            </p>
+            <p>
+              The core issue this research addresses is social vulnerability[cite: 31]. The study aims to solve a major planning flaw: identifying which communities and neighborhoods lack the economic, physical, or social resources to anticipate, cope with, and recover from an earthquake. By mapping these hidden human vulnerabilities, the study provides emergency responders and urban planners with a tool to save lives before a disaster strikes.
+            </p>
+
+            <h3>2. The Multicriteria Approach</h3>
+            <p>
+              To build a realistic vulnerability index, the researchers selected a diverse set of criteria grouped into three vital categories:
+            </p>
+            <ul>
+              <li><strong>Demographic Fragility:</strong> This included factors like the percentage of elderly individuals (aged 65 or older) and young children (under 5). These criteria are critical because these populations face severe physical limitations when evacuating collapsing buildings or navigating debris.</li>
+              <li><strong>Socio-Economic Disadvantage:</strong> Criteria like unemployment rates, low education levels, and low-income brackets were chosen. These are important because wealth and education directly dictate a family's ability to retro-fit an old home, purchase insurance, or independently recover financially after losing their property[cite: 38].</li>
+              <li><strong>The Built Environment:</strong> This looked at building age, construction materials (e.g., unreinforced stone masonry vs. modern concrete), and building height. This is crucial because structures built before modern Portuguese seismic building codes (pre-1980) pose the absolute highest physical threat to the people living inside them.</li>
+            </ul>
+
+            <h3>3. The Data Used</h3>
+            <p>The researchers integrated two primary types of spatial and statistical datasets[cite: 42]:</p>
+            <ul>
+              <li><strong>Socio-Demographic Census Data (BGRI):</strong> The primary data source was the Portuguese National Census (Base Geográfica de Referenciação de Informação). This provided highly localized, gridded statistical data on age distribution, household sizes, literacy rates, and employment status at the neighborhood block level.</li>
+              <li><strong>Municipal Infrastructure and Building Databases:</strong> Obtained directly from local government municipal archives, this dataset contained detailed physical attributes of every building stock in the Vila Franca do Campo municipality, including construction year, number of floors, and structural materials.</li>
+              <li><strong>Administrative Shapefiles:</strong> Vector boundary files used to geo-reference and map the census blocks within the GIS environment[cite: 46].</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>4. The Workflow / Method</h3>
+            <p>
+              The methodology followed a structured, multi-step GIS-based Multi-Criteria Evaluation (MCE) workflow:
+            </p>
+            <ol style="padding-left: 1.5rem; color: var(--muted); margin-bottom: 1.2rem;">
+              <li style="margin-bottom: 0.4rem;"><strong>Standardization (Reclassification):</strong> Because you cannot directly mix census percentages (like a 20% unemployment rate) with structural attributes (like a building built in 1940), all datasets were normalized. The raw data values were converted into uniform, dimensionless risk scores ranging from 0 (lowest vulnerability) to 1 (highest vulnerability)[cite: 50].</li>
+              <li style="margin-bottom: 0.4rem;"><strong>Criteria Weighting (AHP):</strong> The researchers utilized a Group Analytic Hierarchy Process (AHP). They brought together a panel of local civil protection officers, seismologists, and urban planners who filled out a pairwise comparison matrix. This matrix mathematically calculated the relative importance of each layer based on expert consensus. The experts determined that the intersection of ancient, unreinforced stone masonry with dense populations of elderly residents created the ultimate spike in vulnerability.</li>
+              <li style="margin-bottom: 0.4rem;"><strong>Weighted Linear Combination (WLC):</strong> Inside the GIS environment, the standardized criteria maps were multiplied by their calculated AHP weights[cite: 55]. The layers were then stacked and aggregated using a spatial weighted overlay operation to generate a single, continuous Social Vulnerability Index (SVI) layer.</li>
+            </ol>
+
+            <div class="map-embed">
+      		<img src="Portugal_study .png" alt="Social vulnerability to seismic risk on Vila Franca do Campo" />
+              <div class="map-caption">Fig. 4: Social vulnerability related with the four objectives (Demography, Socioeconomic, Built Environment, Seismic Hazard Exposure).</div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h3>5. The Main Findings &amp; Decision Support</h3>
+            <p>
+              The final output of the MCA provided striking spatial evidence that completely changed how disaster management is approached on the island:
+            </p>
+            <ul>
+              <li><strong>The Historic Core Crisis:</strong> The MCA revealed that the highest social vulnerability values were intensely concentrated within the historic urban cores of the municipality. These older neighborhoods are packed with old stone buildings and house a significantly higher proportion of elderly, low-income residents who cannot afford to relocate or retro-fit their homes.</li>
+              <li><strong>The Safer Suburbs:</strong> In contrast, the newly developed suburban fringes showed remarkably low vulnerability scores because they feature modern concrete structures built under strict safety mandates and house younger, economically active families.</li>
+              <li><strong>Direct Decision Support:</strong> The resulting GIS maps provided immediate, actionable support for Portuguese civil defense agencies. Instead of distributing emergency resources evenly across the island, planners were given a visual blueprint showing exactly which specific streets would require targeted evacuation assistance, structural reinforcement funding, and post-disaster temporary shelters.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="sidebar-card">
+            <h3>Project Details</h3>
+            <p><strong>Student:</strong> Manali Singh</p>
+            <p><strong>Course:</strong> Geographical Information Systems(GIS)</p>
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+            <p><strong>Date:</strong> Spring 2026</p>
+            <p><strong>Study Area:</strong> Vila Franca do Campo, São Miguel Island</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Software &amp; Tools</h3>
+            <p>ArcGIS</p>
+            <p>Multi-Criteria Evaluation (MCE)</p>
+            <p>Analytic Hierarchy Process (AHP)</p>
+            <p>Weighted Linear Combination (WLC)</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Downloads</h3>
+            <a href="#" class="button">Download Assignment Report (PDF)</a>
+            <br><br>
+            <a href="#" class="button" style="background:#10b981;">View Active Classification Layer</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 GIS Student Portfolio &bull; Multi-Criteria Analysis Report
+    </div>
+  </footer>
+
+</body>
+</html>

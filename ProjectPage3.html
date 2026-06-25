@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Raster Elevation Models - Wageningen-Nederrijn</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f7fa;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --accent-light:#dbeafe;
+      --border:#000000; /* Solid black borders */
+      --shadow:0 10px 28px rgba(0,0,0,0.06);
+      --radius:20px;
+      --max-width:1150px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+      height: auto;
+      border-radius: var(--radius);
+    }
+
+    a{
+      text-decoration:none;
+      color:var(--accent);
+    }
+
+    .container{
+      width:min(92%, var(--max-width));
+      margin:auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size:1.05rem;
+    }
+
+    .back-link{
+      color:var(--muted);
+      transition:0.2s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      padding:6rem 0 4rem;
+    }
+
+    .hero h1{
+      font-family:'Merriweather',serif;
+      font-size:clamp(2.4rem,6vw,4.5rem);
+      line-height:1.15;
+      margin-bottom:1.3rem;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:800px;
+      font-size:1.1rem;
+    }
+
+    .hero-meta{
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+
+    .meta-item{
+      background:var(--accent-light);
+      color:var(--accent);
+      padding:0.6rem 1rem;
+      border-radius:999px;
+      font-size:0.92rem;
+      font-weight:500;
+    }
+
+    /* =========================
+       FEATURE IMAGE
+    ========================== */
+
+    .feature-image-container {
+      margin-bottom: 5rem;
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
+
+    section{
+      padding-bottom:4rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:3rem;
+      align-items:start;
+    }
+
+    .content-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2.2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .content-card h2{
+      font-family:'Merriweather',serif;
+      margin-bottom:1.2rem;
+      font-size:1.6rem;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card h3{
+      font-family:'Merriweather',serif;
+      font-size:1.2rem;
+      margin-top:1.5rem;
+      margin-bottom:0.6rem;
+      color:var(--text);
+    }
+
+    .content-card p{
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card ul{
+      padding-left:1.2rem;
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card li{
+      margin-bottom:0.4rem;
+    }
+
+    .map-description {
+      margin-top:1.5rem;
+      padding-top:1rem;
+      border-top:1px dashed var(--muted);
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    .sidebar-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .sidebar-card h3{
+      margin-bottom:1rem;
+      font-size:1.1rem;
+    }
+
+    .sidebar-card p{
+      color:var(--muted);
+      margin-bottom:0.7rem;
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+
+    .button{
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.95rem 1.4rem;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      transition:0.2s ease;
+    }
+
+    .button:hover{
+      opacity:0.92;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer{
+      padding:4rem 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media(max-width:900px){
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+      nav{
+        flex-direction:column;
+        gap:1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+        <a href="Student_website_template.html" class="back-link">
+          ← Back to Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>
+        Raster Elevation Models 
+      </h1>
+      <p>
+        An elevation and landscape analysis of Wageningen-Nederrijn exploring regional topography, dike infrastructures, historical flood risks, and modern georeferenced historical maps.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">Raster Analysis</div>
+        <div class="meta-item">Remote Sensing</div>
+        <div class="meta-item">Wageningen-Nederrijn</div>
+        <div class="meta-item">2026</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+     <div class="feature-image-container">
+        <img src="elevation.png" alt="Raster elevation models Overview"> 
+     </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="content-grid">
+
+        <div>
+
+          <div class="content-card">
+            <h2>Project Overview</h2>
+            <p><strong>Region of Interest (ROI) Selection</strong></p>
+            <ul>
+              <li><strong>Location:</strong> Wageningen - Nederrijn (The Netherlands).</li>
+              <li><strong>Reason for Selection:</strong> This region offers a dynamic landscape featuring the historical center of Wageningen, a steep ice-pushed ridge (stuwwal/Veluwe margin), and the low-lying floodplains of the Nederrijn (Lower Rhine) river. This significant gradient makes it an ideal case study for examining structural changes, dike infrastructure, historical flood risks, and river morphology over time.</li>
+            </ul>
+
+            <p><strong>Historical Map Details</strong></p>
+            <ul>
+              <li><strong>Option Selected:</strong> Old Map Option.</li>
+              <li><strong>Map Title/Type:</strong> Dutch Topographic Map (Chromotopografische Kaart / Bonne-kaart series), covering the Wageningen area.</li>
+              <li><strong>Publication Date:</strong> 1927.</li>
+              <li><strong>Surveyor/Cartographer:</strong> Produced by the surveyors and cartographers of the Topografische Dienst (Dutch Ordnance Survey).</li>
+              <li><strong>Commissioned By:</strong> Commissioned by the Dutch Ministry of War (Ministerie van Oorlog) for military reconnaissance and national civil cartography.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h2>Methods & Technical Skills</h2>
+            <p>In this assignment, several core geospatial data processing steps were executed:</p>
+            <ul>
+              <li><strong>Mosaicking/Merging & Clipping Rasters:</strong> Used to compile raw elevation tiles into a seamless dataset and restrict the workspace exactly to the Wageningen-Nederrijn ROI to save computational memory.</li>
+              <li><strong>Georeferencing & Transparency Overlays:</strong> Applied to align the historic 1927 static map sheet with modern projected coordinate systems and enabling direct structural comparison over time.</li>
+              <li><strong>Symbology & Legend Customization:</strong> Configured singleband pseudocolor palettes and integrated layout legends to effectively communicate contrasting land elevations.</li>
+            </ul>
+          </div>
+
+
+          <div class="content-card" style="padding-bottom: 2rem;">
+            <h3>1. Digital Surface Model (DSM)</h3>
+            <div style="margin: 1rem 0;">
+              <img src="DSM.png" alt="Digital Surface Model (DSM)" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 1.5rem;">
+              Figure 1.1. Digital Surface Model visualization using high-contrast monochromatic palettes.
+            </p>
+            
+            <div class="map-description">
+              <p>
+                This map captures the highest reflective surfaces in the region, including canopy heights, vegetation structures, buildings, and flood embankments.
+              </p>
+              <p>
+                I used a monochromatic, high-contrast forest-green color ramp. Deep green represents the lowest base elevations (such as the flat floodplains and water levels), while bright white-green highlights surface elements like the dense framework of Wageningen and high vegetation canopies along the riverbanks.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="content-card" style="padding-bottom: 2rem;">
+            <h3>2. Digital Terrain Model (DTM)</h3>
+            <div style="margin: 1rem 0;">
+              <img src="DTM.png" alt="Digital Terrain Model (DTM)" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 1.5rem;">
+              Figure 1.2. Bare earth topography after stripping vegetation and artificial structures.
+            </p>
+            
+            <div class="map-description">
+              <p>
+                The DTM represents the "bare earth" topography. By utilizing filtering algorithms all buildings, trees and temporary surface features have been completely stripped away, leaving only the raw, baseline geologic and hydrologic surface.
+              </p>
+              <p>
+                To differentiate this model from the surface features a cool high-contrast palette ranging from deep indigo/purple to bright teal and cyan was chosen. Deep purples and dark blues map out the lowest points of the terrain, while bright cyan tracks the ascending elevation.
+              </p>
+              <p>
+                The difference between this and the DSM is incredible. The speckled texture of Wageningen is completely gone, instead we see the smooth, flat ground upon which the area was built. Stripped of vegetation, the old historical river beds, paleochannels, and natural levees become perfectly visible winding through the landscape. The steep ice-pushed ridge (stuwwal) rising up toward the Veluwe is highlighted by the smooth gradient change in the upper left.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="content-card" style="padding-bottom: 2rem;">
+            <h3>3. Elevation Map Layout</h3>
+            <div style="margin: 1rem 0;">
+              <img src="Elevation.png" alt="Elevation Analysis Model" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 1.5rem;">
+              Figure 1.3. Structured overview of macro-topography with classification ranges.
+            </p>
+            
+            <div class="map-description">
+              <p>
+                This map provides a clean overview of the macro-topography of the region, emphasizing the structural boundary between the high ground and the low-lying river plains. A singleband pseudocolor ramp using shades of green was selected.
+              </p>
+              <p>
+                A crisp white-to-light-green color represents lower elevations (5m and below), while deep, dark forest green represents the higher elevations (10m and above). A clean professional legend is placed in the bottom-left corner to give immediate spatial context to the viewer.
+              </p>
+              <p>
+                What immediately catches the eye is the sharp, dramatic contrast between the vast, dark green area in the upper half of the map and the bright braided-looking river valley below. The modern dike infrastructure is highly visible as thin, winding lines tracking alongside the river channels demonstrating exactly how the landscape is engineered to hold back water.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="content-card" style="padding-bottom: 2rem;">
+            <h3>4. Historical Map Overlay</h3>
+            <div style="margin: 1rem 0;">
+              <img src="OLDMAP1.1.png" alt="Historical 1927 Map Overlay" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 1.5rem;">
+              Figure 1.4. Georeferenced historical 1927 Bonne-kaart superimposed onto contemporary DTM base.
+            </p>
+            
+            <div class="map-description">
+              <p><strong>Wageningen, Nederrijn Elevation Analysis - 772.085km²</strong></p>
+              <p>
+                This map demonstrates a georeferenced overlay where the historical 1927 topographic map is draped with transparency directly over the modern DTM base layer. The historical map retains its original vintage muted tones (reds for urban brick, tans for fields, and light greens for forests), blended with approximately 40-50% transparency to let the highly saturated, modern purple and blue DTM details bleed through from underneath.
+              </p>
+              <p>
+                An area of intense interest is how the historic 1927 red-shaded core of Wageningen sits tucked against the edge of the higher terrain to avoid historical flooding. Looking closely at the overlay, the modern DTM underneath reveals older geometric shapes and historical defensive earthworks (such as old moats or bastion traces) that perfectly match the old 1927 boundaries.
+              </p>
+              <p>
+                Furthermore, we can see exactly where the Nederrijn's winter dikes (winterdijken) and summer dikes (zomerdijken) noted in 1927 match the exact topographic ridges visible in the modern data proving that despite nearly a century of development the foundational bones of Dutch water management have remained remarkably locked in place.
+              </p>
+            </div>
+          </div>
+
+
+          <div class="content-card">
+            <h2>Synthesis Reflection</h2>
+            <p>
+              The processed models clearly illustrate how topographic elements dictate human settling patterns and engineering safeguards. Comparing the historical features to modern digital terrain surfaces reveals the high precision of 1927 Dutch surveying. It also shows how structural water-holding structures and elevation gradients continue to influence modern territorial planning and flood safety metrics across the river channels.
+            </p>
+          </div>
+
+        </div>
+
+        <div>
+          <div class="sidebar-card">
+            <h3>Project Details</h3>
+            <p><strong>Student:</strong> Manali Singh</p>
+            <p><strong>Course:</strong> Geographical Information Systems (GIS)</p>
+            <p><strong>Historical Base:</strong> Bonne-kaart series (1927)</p>
+            <p><strong>Date:</strong> Spring 2026</p>
+            <p><strong>Study Area:</strong> Wageningen - Nederrijn, NL</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Software & Tools</h3>
+            <p>QGIS Desktop</p>
+            <p>Raster Mosaicking</p>
+            <p>Georeferencer Plugin</p>
+            <p>Transparency / Blending Modes</p>
+            <p>AHN Digital Terrain Models</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Downloads</h3>
+            <a href="#" class="button">
+              Download Map PDF
+            </a>
+            <br><br>
+            <a href="#" class="button">
+              View Interactive Map
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 GIS Student Portfolio
+    </div>
+  </footer>
+
+</body>
+</html>

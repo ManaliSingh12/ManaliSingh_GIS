@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Vector Data and Analysis - Physiotherapy Care Access</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root{
+      --bg:#f5f7fa;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --accent-light:#dbeafe;
+      --border:#000000; /* Solid black borders */
+      --shadow:0 10px 28px rgba(0,0,0,0.06);
+      --radius:20px;
+      --max-width:1150px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+      height: auto;
+      border-radius: var(--radius);
+    }
+
+    a{
+      text-decoration:none;
+      color:var(--accent);
+    }
+
+    .container{
+      width:min(92%, var(--max-width));
+      margin:auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size:1.05rem;
+    }
+
+    .back-link{
+      color:var(--muted);
+      transition:0.2s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      padding:6rem 0 4rem;
+    }
+
+    .hero h1{
+      font-family:'Merriweather',serif;
+      font-size:clamp(2.4rem,6vw,4.5rem);
+      line-height:1.15;
+      margin-bottom:1.3rem;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:800px;
+      font-size:1.1rem;
+    }
+
+    .hero-meta{
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+
+    .meta-item{
+      background:var(--accent-light);
+      color:var(--accent);
+      padding:0.6rem 1rem;
+      border-radius:999px;
+      font-size:0.92rem;
+      font-weight:500;
+    }
+
+    /* =========================
+       FEATURE IMAGE
+    ========================== */
+
+    .feature-image-container {
+      margin-bottom: 5rem;
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
+
+    section{
+      padding-bottom:4rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:3rem;
+      align-items:start;
+    }
+
+    .content-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2.2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .content-card h2{
+      font-family:'Merriweather',serif;
+      margin-bottom:1.2rem;
+      font-size:1.6rem;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card h3{
+      font-family:'Merriweather',serif;
+      font-size:1.15rem;
+      margin-top:1.5rem;
+      margin-bottom:0.5rem;
+      color: var(--text);
+    }
+
+    .content-card p{
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card ul{
+      padding-left:1.2rem;
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card li{
+      margin-bottom:0.4rem;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    .sidebar-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .sidebar-card h3{
+      margin-bottom:1rem;
+      font-size:1.1rem;
+    }
+
+    .sidebar-card p{
+      color:var(--muted);
+      margin-bottom:0.7rem;
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+
+    .button{
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.95rem 1.4rem;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      transition:0.2s ease;
+    }
+
+    .button:hover{
+      opacity:0.92;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer{
+      padding:4rem 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media(max-width:900px){
+
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+
+      nav{
+        flex-direction:column;
+        gap:1rem;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+        <a href="Student_website_template.html" class="back-link">
+          ← Back to Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>
+        Vector Data and Analysis
+      </h1>
+      <p>
+        Analyzing geographic accessibility to healthcare infrastructure and auditing Volunteered Geographic Information (VGI) distributions within the municipality of Utrecht.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">GIS Analysis</div>
+        <div class="meta-item">Network Isochrones</div>
+        <div class="meta-item">Utrecht Health Logistics</div>
+        <div class="meta-item">2026</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+     <div class="feature-image-container">
+        <img src="map2.png" alt="Isochrone Map Baseline Network View"> 
+     </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="content-grid">
+
+        <div>
+
+          <div class="content-card">
+            <h2>Part 1: Walking-Time Network Catchment Analysis</h2>
+            
+            <h3>Spatial Question</h3>
+            <p>
+              How accessible is physiotherapy care in Utrecht on foot, and which residential areas fall outside a reasonable walking distance (20 minutes or less) from the nearest clinic?
+            </p>
+
+            <h3>Methods & Steps</h3>
+            <p>
+              To answer this, I downloaded physiotherapist clinic locations and residential building footprints (houses and apartments) from OpenStreetMap using the QuickOSM plugin in QGIS. I then generated walking-time isochrones (5, 10, and 20 minutes) around each clinic using the ORS Tools plugin which connects to the OpenRouteService API. Finally, I overlaid the residential building points on top of the isochrones to visually assess how many residences fall within each travel-time band.
+            </p>
+
+            <h3>Findings & Insights</h3>
+            <p>
+              This map displays walking time isochrones (5, 10 and 20 minutes) around physiotherapist clinics in Utrecht generated using OpenStreetMaps in QGIS. The teal-to-green polygons represent the area reachable on foot within each time threshold from any given clinic, accounting for actual street networks rather than simple straight-line distances. The dark red dots represent residential buildings.
+            </p>
+            <p>
+              Visually, the map indicates strong overall coverage across Utrecht's core urban center, where a high density of overlapping polygons shows that most urban residences are well within a 5-to-10-minute walk from care. However, noticeable gaps emerge on the urban periphery—specifically in newer residential developments or industrial edges—where clusters of red residential points sit completely uncovered by even the 20-minute threshold polygon. These peripheral zones represent clear care deficits where residents face substantial walking barriers to access local physiotherapy services.
+            </p>
+          </div>
+
+          <div class="content-card" style="padding-bottom: 1.5rem;">
+            <img src="Isochronemap1.1.png" alt="Utrecht Isochrone Network Access Map Workspace" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            <p style="margin-top: 1rem; margin-bottom: 0; text-align: center; font-size: 0.9rem; font-weight: 500;">
+              Figure 1.1 QGIS workspace showing the walking-time isochrone layers (5, 10, 20 min), clinic points, and residential structures.
+            </p>
+          </div>
+
+
+          <div class="content-card">
+            <h2>Part 2: Grid-Based Density Mapping of VGI Walkability Data</h2>
+            
+            <h3>Overview</h3>
+            <p>
+              This section covers a 500m grid (fishnet) covering Utrecht, with the color of each cell representing the number of walkability data points collected within it (ranging from 0 to 1 in the lightest cells to 4 to 19 in the darkest red cells). Pink and orange dots show the individual VGI points collected by women and men respectively during the in-class data collection exercise. 
+            </p>
+
+            <h3>Spatial Question</h3>
+            <p>
+              Where in Utrecht is walkability reported as highest, and does this differ between men and women?
+            </p>
+
+            <h3>Findings & Patterns</h3>
+            <p>
+              Data density is highest in and around Utrecht Centraal and Binnenstad, where several grid cells fall into the darkest classes (3 to 4 and 4 to 19 points) including one very dark cell just south of the station and another near Utrecht Centrum-West. A smaller but notable hotspot also appears further east near Bunnik. Outside these clusters, most of the city including Overvecht, Zuilen and the southern residential areas falls into the lowest density class (0 to 2 points), reflecting limited data collection there rather than necessarily lower walkability.
+            </p>
+
+            <h3>Men vs. Women Comparison</h3>
+            <p>
+              The high density cells in the city center contain a mix of both pink (women) and orange (men) points clustered closely together suggesting general agreement between men and women on the city center being highly walkable. The isolated hotspot near Bunnik, however, appears to be dominated by points from a single gender group, which may reflect where specific group members happened to walk rather than a genuine difference in perceived walkability. Overall, the two groups' high density areas overlap more than they diverge though the data is too sparse outside downtown to draw strong conclusions about suburban areas.
+            </p>
+
+            <h3>Methods Breakdown</h3>
+            <p>
+              I used a grid/fishnet-based count, created with Vector → Research Tools → Create Grid (500m spacing) then counted the number of VGI points falling within each cell using Count Points in Polygon.
+            </p>
+            <p>
+              I chose a grid-based count over kernel density or interpolation because the VGI dataset was relatively sparse and unevenly distributed across the city. A smoothed density surface risked implying confident estimates in areas with no actual observations, while a fixed grid keeps the analysis transparent and makes it easy to compare the Man and Woman subsets within the same cells.
+            </p>
+          </div>
+
+          <div class="content-card" style="padding-bottom: 1.5rem;">
+            <img src="GridMap1.2.png" alt="Utrecht VGI Point Density Grid Count Map" style="width: 100%; height: auto; display: block; border: 1px solid var(--border);">
+            <p style="margin-top: 1rem; margin-bottom: 0; text-align: center; font-size: 0.9rem; font-weight: 500;">
+              Figure 2.1. Grid-based density map (500m cells) showing the distribution of VGI walkability data points collected across Utrecht, with pink points representing responses from women and orange points representing responses from men. Darker red cells indicate a higher number of points collected within that cell.
+            </p>
+          </div>
+
+
+          <div class="content-card">
+            <h2>Critical Framework Reflection</h2>
+            <p>
+              When deciding how to process the spatial layout, alternative density mapping techniques were considered and evaluated against the specific structure of our dataset:
+            </p>
+            <ul>
+              <li><strong>Kernel Density Estimation (KDE):</strong> This creates a smooth, continuous surface from point data by calculating point intensity within a defined search radius, useful for visualizing "hotspots" but can overstate certainty in sparse datasets. I avoided this because our VGI dataset was relatively sparse and unevenly collected and a smoothed surface risked implying confident estimates in areas where no data was actually gathered.</li>
+              <li><strong>Areal Interpolation:</strong> This technique estimates values for new geographic units based on data collected in a different set of zones, often used when reconciling mismatched administrative boundaries. This wasn't relevant in my map since I wasn't reconciling mismatched administrative units.</li>
+              <li><strong>Classification and Clustering:</strong> Groups data into meaningful categories or clusters based on shared attributes or spatial proximity, helping identify natural groupings rather than imposing a predefined surface. This would add complexity without clear benefit over a simple, transparent grid count for this exploratory assignment.</li>
+              <li><strong>Point Pattern Analysis:</strong> A technique that examines whether the spatial arrangement of points is random, clustered or dispersed. Rather than analyzing point distribution statistically, for my project I used a simplified spatial version of this idea: dividing the study area into a fixed 500m grid and counting how many VGI points fell within each cell. This let me directly visualize where data points were clustered (dense, dark cells) versus sparse (light cells) across Utrecht.</li>
+            </ul>
+            <p style="margin-top: 1.5rem; font-style: italic;">
+              <strong>Takeaway on VGI limitations:</strong> This exercise made clear how strongly VGI data quality depends on participant coverage; the density pattern above largely reflects where our group physically walked rather than where walkability is objectively highest or lowest. In the future, I would use a more systematic or stratified collection approach (for eg, assigning groups to specific neighborhoods) to reduce this spatial sampling bias, and aim for a larger sample size so the grid patterns are more statistically meaningful.
+            </p>
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="sidebar-card">
+            <h3>Project Details</h3>
+            <p><strong>Student:</strong> Manali Singh</p>
+            <p><strong>Course:</strong> Geographical Information Systems (GIS)</p>
+            <p><strong>Spatial Analytics:</strong> Isochrone Networks & Point Densities</p>
+            <p><strong>Date:</strong> Spring 2026</p>
+            <p><strong>Study Area:</strong> Utrecht, Netherlands</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Software & Tools</h3>
+            <p>QGIS Desktop</p>
+            <p>QuickOSM Plugin</p>
+            <p>ORS Tools (OpenRouteService API)</p>
+            <p>Network Isochrone Catchment</p>
+            <p>Fixed Vector Grid Density Counting</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Downloads & Submissions</h3>
+            <a href="#" class="button">
+              Download Map PDF
+            </a>
+            <br><br>
+            <a href="#" class="button">
+              View High-Res Workspace
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 GIS Student Portfolio
+    </div>
+  </footer>
+
+</body>
+</html>

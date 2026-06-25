@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Land Use Classification &amp; NDVI Analysis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f7fa;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --accent-light:#dbeafe;
+      --border:#000000; /* Updated: Solid black borders */
+      --shadow:0 10px 28px rgba(0,0,0,0.06);
+      --radius:20px;
+      --max-width:1150px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+      height:auto;
+    }
+
+    a{
+      text-decoration:none;
+      color:var(--accent);
+    }
+
+    .container{
+      width:min(92%, var(--max-width));
+      margin:auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size:1.05rem;
+    }
+
+    .back-link{
+      color:var(--muted);
+      transition:0.2s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+    .hero{
+      padding:6rem 0 4rem;
+    }
+
+    .hero h1{
+      font-family:'Merriweather',serif;
+      font-size:clamp(2.4rem,6vw,4.2rem);
+      line-height:1.15;
+      margin-bottom:1.3rem;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:800px;
+      font-size:1.1rem;
+    }
+
+    .hero-meta{
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+
+    .meta-item{
+      background:var(--accent-light);
+      color:var(--accent);
+      padding:0.6rem 1rem;
+      border-radius:999px;
+      font-size:0.92rem;
+      font-weight:500;
+    }
+
+    /* =========================
+       FEATURE IMAGE
+    ========================== */
+    .feature-image-wrapper {
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:5rem;
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
+    section{
+      padding-bottom:4rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:3rem;
+      align-items:start;
+    }
+
+    .content-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2.2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .content-card h2{
+      font-family:'Merriweather',serif;
+      margin-bottom:1.2rem;
+      font-size:1.6rem;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card h3{
+      margin:1.5rem 0 0.5rem 0;
+      font-size:1.2rem;
+      color:var(--text);
+    }
+
+    .content-card p{
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card ul{
+      padding-left:1.5rem;
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card li{
+      margin-bottom:0.4rem;
+    }
+
+    .map-embed {
+      margin:1.5rem 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:#fdfdfd;
+    }
+
+    .map-caption {
+      font-size:0.85rem;
+      color:var(--muted);
+      padding:0.6rem 1rem;
+      background:var(--bg);
+      border-top:1px solid var(--border);
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+    .sidebar-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .sidebar-card h3{
+      margin-bottom:1rem;
+      font-size:1.1rem;
+    }
+
+    .sidebar-card p{
+      color:var(--muted);
+      margin-bottom:0.7rem;
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       GALLERY
+    ========================== */
+    .gallery{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:1.5rem;
+      margin-top:1.5rem;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+    .button{
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.95rem 1.4rem;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      transition:0.2s ease;
+      text-align:center;
+      width:100%;
+    }
+
+    .button:hover{
+      opacity:0.92;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+    footer{
+      padding:4rem 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+    @media(max-width:900px){
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+      nav{
+        flex-direction:column;
+        gap:1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+        <a href="Student_website_template.html" class="back-link">
+          &larr; Back to Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Land Use Classification &amp; Environmental Dynamics</h1>
+      <p>
+         Exploring automated land cover workflows, multispectral signatures, and inclusive map design paradigms to evaluate geographic regions efficiently using Sentinel-2 datasets.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">GIS Analysis</div>
+        <div class="meta-item">Remote Sensing</div>
+        <div class="meta-item">Sentinel-2</div>
+        <div class="meta-item">Assignment 5</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="feature-image-wrapper">
+      <img src="Supervised_pixelbased.png" alt="Supervised Land Use Classification Map" />
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="content-grid">
+
+        <div>
+
+          <div class="content-card">
+            <h2>The Value of Automated Land Cover Classification</h2>
+            <p>
+              Automated land cover classification allows researchers to process massive amounts of satellite imagery quickly, consistently, and over enormous geographic areas. Instead of manually tracing forests, rivers or urban boundaries which would take hundreds of hours and introduce human bias, computer algorithms analyze the unique "spectral signatures" (reflected light) of different materials instantly. This is crucial for real-time tracking of environmental shifts like deforestation, urban sprawl, climate change impacts, and agricultural productivity.
+            </p>
+
+            <h3>Spatial Resolution Specifications</h3>
+            <p>
+              The spatial resolution for the primary visible and near-infrared bands utilized in this analysis is exactly <strong>10 meters by 10 meters</strong> per pixel.
+            </p>
+          </div>
+
+          <div class="content-card">
+            <h2>Supervised vs. Unsupervised Classification</h2>
+            
+            <h3>Supervised Classification</h3>
+            <p>
+              In this type of classification we manually select known areas on a map called 'Training samples' to show the computers exactly what 'forest', 'water' or 'urban' looks like. The algorithm then finds every other pixel in the image that matches those specific spectral profiles.
+            </p>
+
+            <h3>Unsupervised Classification</h3>
+            <p>
+              In this type of classification the computer acts as a blind explorer and does not give it any training samples. Instead, we simply tell the software how many distinct categories we want (e.g., 5 or 10 groups), and the algorithm automatically clusters pixels together based purely on their statistical similarities. Afterward, it is up to us to look at each cluster and label what it actually represents on the ground.
+            </p>
+          </div>
+
+          <div class="content-card">
+            <h2>Spectral Profiles &amp; Spectral Signatures</h2>
+            <p>
+              Every surface material on Earth reflects, absorbs, or transmits light differently depending on the wavelength. By evaluating these unique combinations, we identify target features across separate bands.
+            </p>
+
+            <div class="map-embed">
+              <img src="Spectral_profile.png" alt="Spectral Profile Screenshot" />
+              <div class="map-caption">Figure 1: Generated Spectral Profile tracking distinct land cover trends across multiple wavelengths.</div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h2>Classification Output Maps</h2>
+            
+            <div class="map-embed">
+              <img src="Unsupervised-pixelbased.png" alt="Unsupervised Pixel Based Classification" />
+              <div class="map-caption">Figure 2: Unsupervised Pixel Based Classification Model</div>
+            </div>
+
+            <div class="map-embed">
+              <img src="Unsupervised-objectbased.png" alt="Unsupervised Object Based Classification" />
+              <div class="map-caption">Figure 3: Unsupervised Object Based Classification Model</div>
+            </div>
+
+            <div class="map-embed">
+              <img src="Supervised_pixelbased.png" alt="Supervised Pixel Based Classification" />
+              <div class="map-caption">Figure 4: Supervised Pixel Based Classification Model</div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h2>NDVI Optimization &amp; Map Communication Strategy</h2>
+            <p>
+              The design layout implements an intentional color scheme designed to balance communication metrics across a diverse range of targeted users.
+            </p>
+
+            <h3>Color Vision Accessibility</h3>
+            <p>
+              Standard NDVI maps heavily rely on a green-to-red gradient. This combination makes it difficult or impossible for individuals with color blindness to interpret. By utilizing a palette that transitions from cyan/blue through yellow to vibrant orange/red, this map ensures a distinct contrast that remains fully readable to a much wider audience.
+            </p>
+
+            <h3>High Visual Contrasts for Features</h3>
+            <p>
+              The water bodies (such as the canals and rivers) and highly urbanized zones stand out sharply in cool cyan and light tones. Meanwhile the surrounding agricultural fields and forested areas are rendered in warm, dense oranges and reds. This dramatic split between cool and warm tones prevents the urban features from blending visually into the surrounding countryside.
+            </p>
+
+            <h3>Target Audience Framework</h3>
+            <ul>
+              <li><strong>The General Public and Website Visitors:</strong> Because the map avoids the red-green trap, it is inherently inclusive for general web audiences, ensuring any visitor can immediately grasp the spatial differences in Utrecht's landscape regardless of their color vision.</li>
+              <li><strong>Urban Planners and Environmental Advisors:</strong> The stark contrast between the cyan urban core and the fiery orange/red agricultural fringes allows city planners to easily identify concrete-heavy "urban heat islands" versus regional carbon sinks and green spaces around the city.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="sidebar-card">
+            <h3>Project Details</h3>
+            <p><strong>Student:</strong> Manali Singh</p>
+            <p><strong>Course:</strong> Geographical Information Systems(GIS)</p>
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+            <p><strong>Date:</strong> Spring 2026</p>
+            <p><strong>Study Area:</strong> Utrecht Region</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Software &amp; Tools</h3>
+            <p>ArcGIS</p>
+            <p>Google Earth Engine API</p>
+            
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Downloads</h3>
+            <a href="#" class="button">Download Assignment Report (PDF)</a>
+            <br><br>
+            <a href="#" class="button" style="background:#10b981;">View Active Classification Layer</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 GIS Student Portfolio &bull; Land Use Track Report
+    </div>
+  </footer>
+
+</body>
+</html>

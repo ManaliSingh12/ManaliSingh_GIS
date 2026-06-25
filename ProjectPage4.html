@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Vegetation Indices and Environmental Changes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f7fa;
+      --surface:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;
+      --accent-light:#dbeafe;
+      --border:#000000; /* Updated: Solid black borders */
+      --shadow:0 10px 28px rgba(0,0,0,0.06);
+      --radius:20px;
+      --max-width:1150px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.8;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+      height:auto;
+    }
+
+    a{
+      text-decoration:none;
+      color:var(--accent);
+    }
+
+    .container{
+      width:min(92%, var(--max-width));
+      margin:auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 0;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size:1.05rem;
+    }
+
+    .back-link{
+      color:var(--muted);
+      transition:0.2s ease;
+    }
+
+    .back-link:hover{
+      color:var(--accent);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+    .hero{
+      padding:6rem 0 4rem;
+    }
+
+    .hero h1{
+      font-family:'Merriweather',serif;
+      font-size:clamp(2.4rem,6vw,4.2rem);
+      line-height:1.15;
+      margin-bottom:1.3rem;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:800px;
+      font-size:1.1rem;
+    }
+
+    .hero-meta{
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+    }
+
+    .meta-item{
+      background:var(--accent-light);
+      color:var(--accent);
+      padding:0.6rem 1rem;
+      border-radius:999px;
+      font-size:0.92rem;
+      font-weight:500;
+    }
+
+    /* =========================
+       FEATURE IMAGE
+    ========================== */
+    .feature-image-wrapper {
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:5rem;
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
+    section{
+      padding-bottom:4rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:3rem;
+      align-items:start;
+    }
+
+    .content-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2.2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .content-card h2{
+      font-family:'Merriweather',serif;
+      margin-bottom:1.2rem;
+      font-size:1.6rem;
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-card h3{
+      margin:1.5rem 0 0.5rem 0;
+      font-size:1.2rem;
+      color:var(--text);
+    }
+
+    .content-card p{
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card ul{
+      padding-left:1.5rem;
+      color:var(--muted);
+      margin-bottom:1.2rem;
+    }
+
+    .content-card li{
+      margin-bottom:0.4rem;
+    }
+
+    .map-embed {
+      margin:1.5rem 0;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:#fdfdfd;
+    }
+
+    .map-caption {
+      font-size:0.85rem;
+      color:var(--muted);
+      padding:0.6rem 1rem;
+      background:var(--bg);
+      border-top:1px solid var(--border);
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+    .sidebar-card{
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:2rem;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:2rem;
+    }
+
+    .sidebar-card h3{
+      margin-bottom:1rem;
+      font-size:1.1rem;
+    }
+
+    .sidebar-card p{
+      color:var(--muted);
+      margin-bottom:0.7rem;
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       GALLERY
+    ========================== */
+    .gallery{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:1.5rem;
+      margin-top:1.5rem;
+    }
+
+    /* =========================
+       BUTTON
+    ========================== */
+    .button{
+      display:inline-block;
+      margin-top:1rem;
+      padding:0.95rem 1.4rem;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      transition:0.2s ease;
+      text-align:center;
+      width:100%;
+    }
+
+    .button:hover{
+      opacity:0.92;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+    footer{
+      padding:4rem 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.95rem;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+    @media(max-width:900px){
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+      nav{
+        flex-direction:column;
+        gap:1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          GIS Student Portfolio
+        </div>
+        <a href="Student_website_template.html" class="back-link">
+          &larr; Back to Portfolio
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Vegetation Indices and Environmental Changes</h1>
+      <p>
+         I chose to map the vegetation of the Finnish Lakeland because its intricate network of thousands of freshwater bodies and dense boreal forests makes it a highly dynamic environment for remote sensing.
+      </p>
+
+      <div class="hero-meta">
+        <div class="meta-item">GIS Analysis</div>
+        <div class="meta-item">Remote Sensing</div>
+        <div class="meta-item">Sentinel-2</div>
+        <div class="meta-item">Assignment 4</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="feature-image-wrapper">
+      <img src="map4.png" alt="Vegetation Indices and environmental changes" />
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="content-grid">
+
+        <div>
+
+          <div class="content-card">
+            <h2>Orthomosaics &amp; Composite Generation</h2>
+            
+            <h3>What is an orthomosaic?</h3>
+            <p>
+              An orthomosaic is a large, detailed image map created by stitching together multiple individual satellite or aerial photographs. Crucially, these individual images are orthorectified, meaning they are geometrically corrected for topographic relief, lens distortion, and camera tilt. The final image has a uniform scale across the entire map, allowing you to measure true distances, areas, and angles accurately, just like a standard topographic map.
+            </p>
+
+            
+            <p>
+              To create a clean, cloud-free composite using open-source data such as like Google Earth Engine, we follow these steps:
+            </p>
+            <ul>
+               <li><strong>Data Collection:</strong> Filtered the Sentinel-2 MultiSpectral Instrument image collection by our specific Region of Interest (ROI geometry polygon) and temporal windows corresponding to mid-summer development.</li>
+              <li><strong>Cloud Masking:</strong> Applied a specific automated algorithm utilizing the built-in QA (Quality Assessment) bitmask bands to isolate and discard pixel configurations containing clouds, atmospheric haze, or localized shadows.</li>
+              <li><strong>Temporal &amp; Median Reduction:</strong> Evaluated the remaining clear pixel arrays over the temporal stack for every coordinate point, calculating the statistical <code>median()</code> reduction function to remove outliers and reconstruct a seamless, clear surface visualization layer.</li>
+              <li><strong>Export Workflow:</strong> Programmed an <code>Export.image.toDrive()</code> configuration to render and output our finalized spatial mosaics at a structured resolution scale for localized GIS interpretation.</li>
+            </ul>
+            </ul>
+
+            <div class="map-embed">
+              <img src="Layout_RGB2024.png" alt="True Color RGB 2024" />
+              <div class="map-caption">Figure 1: Cloudless True Color RGB Composite (2024)</div>
+            </div>
+
+            <div class="map-embed">
+              <img src="Layout_RGB2017.png" alt="True Color RGB 2017" />
+              <div class="map-caption">Figure 2: Cloudless True Color RGB Composite (2017)</div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h2>Multispectral Satellite Imagery</h2>
+            
+            
+            <p>
+              Unlike standard cameras that only capture light in the visible spectrum (Red, Green, and Blue), multispectral satellite imagery captures data across specific, separate wavelengths of the electromagnetic spectrum. This includes wavelengths invisible to the human eye, such as Near-Infrared (NIR), Short-Wave Infrared (SWIR), and the Red Edge.
+            </p>
+
+            
+            <p>
+              Every surface material on Earth (water, healthy vegetation, dry soil, concrete) reflects, absorbs, or transmits light differently depending on the wavelength. This unique signature is called a spectral signature. With multispectral data, you can:
+            </p>
+            <ul>
+              <li>Identify features that look identical in a standard photo (e.g., distinguishing an artificial turf field from real grass).</li>
+              <li>Monitor forest health, map water bodies, track wildfire burn scars, and classify land use (urban vs. agricultural vs. forest).</li>
+            </ul>
+
+            
+            <p>
+              Multispectral imagery is a foundational tool for tracking United Nations Sustainable Development Goals (SDGs) because it provides unbiased, objective, and scalable global data:
+            </p>
+            <ul>
+              <li><strong>Climate Action &amp; Ecosystems (SDGs 13 &amp; 15):</strong> It maps deforestation rates, measures carbon sequestration capacity in forests, and tracks the loss of biodiversity habitats.</li>
+              <li><strong>Sustainable Agriculture (SDG 2):</strong> It helps farmers practice precision agriculture—detecting crop stress, water shortages, or nutrient deficiencies early to minimize fertilizer run-off and maximize yield.</li>
+              <li><strong>Water Management (SDG 6):</strong> It monitors the water quality of large freshwater systems (like the Finnish Lakeland), detecting toxic algal blooms and tracking changes in reservoir levels over time.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h2>Satellite Specifications &amp; Sensors</h2>
+           
+            <ul>
+              <li><strong>Who runs it:</strong> The Sentinel-2 mission is developed and operated by the European Space Agency (ESA) as part of the European Commission's Copernicus Programme.</li>
+              <li><strong>Type of Satellite:</strong> It is a constellation of two identical polar-orbiting satellites (Sentinel-2A and Sentinel-2B) placed in the same sun-synchronous orbit, phased 180&deg; apart to maximize revisit times.</li>
+              <li><strong>Payload:</strong> The payload on each satellite is the Multispectral Instrument (MSI). The MSI samples 13 spectral bands ranging from the visible and near-infrared to short-wave infrared, featuring spatial resolutions of 10, 20, and 60 meters.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h2>Vegetation Indices &amp; NDVI Analysis</h2>
+            
+            
+            <p>
+              A vegetation index (VI) is a mathematical combination of two or more spectral bands designed to highlight the presence, abundance, or health of vegetation while minimizing background noise (like soil variations or atmospheric effects). They are used to quantitatively monitor plant growth, canopy cover, chlorophyll levels, and overall biomass from space.
+            </p>
+
+            
+            <p>
+              NDVI stands for Normalized Difference Vegetation Index. It is the most widely used index for assessing green vegetation density and health.
+            </p>
+            <p>
+              <strong>How it works:</strong> Healthy, green plants strongly absorb visible Red light (for photosynthesis) and highly reflect Near-Infrared (NIR) light (due to the internal structure of their leaves). Unhealthy or sparse vegetation reflects less NIR and more Red. Water and rocks tend to reflect both similarly, or absorb NIR heavily.
+            </p>
+            <p>
+              <strong>The Formula &amp; Scale:</strong> The formulation is calculated as (NIR - Red) / (NIR + Red), mapping an absolute scale from &minus;1 to +1.
+            </p>
+            <ul>
+              <li><strong>Values near 0.6 to 0.9:</strong> Dense, healthy green vegetation (forests, crops).</li>
+              <li><strong>Values near &minus;0.1 to 0.1:</strong> Bare soil, rock, sand, or snow.</li>
+              <li><strong>Negative values (approaching &minus;1):</strong> Water bodies, clouds, or deep shadows.</li>
+            </ul>
+
+            <div class="map-embed">
+              <img src="NDVI2024.png" alt="NDVI Composite 2024" />
+              <div class="map-caption">Figure 3: Finnish Lakeland NDVI Composite Map (2024)</div>
+            </div>
+
+            <div class="map-embed">
+              <img src="NDVI2017.png" alt="NDVI Composite 2017" />
+              <div class="map-caption">Figure 4: Finnish Lakeland NDVI Composite Map (2017)</div>
+            </div>
+          </div>
+
+          <div class="content-card">
+            <h2>Environmental Dynamics &amp; Change Detection</h2>
+            
+            
+            <p>
+              The time of year (seasonality) drastically alters the spectral reflection of the landscape, which directly impacts our data analysis:
+            </p>
+            <ul>
+              <li><strong>Phenology (Plant Lifecycle):</strong> If we create an orthomosaic of Finland using spring data, the trees may still be bare, resulting in lower NDVI values. Summer data captures peak canopy greenness ("peak biomass"), which is ideal for evaluating forest density.</li>
+              <li><strong>Sun Angle and Shadows:</strong> In high-latitude areas like Finland, winter images suffer from very low sun angles, causing long, dark topography shadows that skew spectral calculations.</li>
+              <li><strong>Snow and Ice Cover:</strong> Winter composites will show snow and ice rather than underlying vegetation or water bodies. For accurate land cover or vegetation change mapping (like comparing 2017 vs. 2024 maps), it is crucial to use images captured during the exact same seasonal window (typically mid-to-late summer) to ensure you are measuring long-term climate or land-use changes rather than just seasonal shifts.</li>
+            </ul>
+
+            <h3>Long-term Change Map Display</h3>
+            <div class="gallery">
+              <div class="map-embed" style="margin: 0;">
+                <img src="NDVIchange_(2017-2024).png" alt="NDVI Change between 2017 and 2024" />
+                <div class="map-caption">Figure 5: Calculated Differential NDVI Spatial Change Trend (2017&ndash;2024)</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="sidebar-card">
+            <h3>Project Details</h3>
+            <p><strong>Student:</strong> Manali Singh</p>
+            <p><strong>Course:</strong> Geographical information systems(GIS)</p>
+            <p><strong>Instructor:</strong> Dr. Britta Ricker</p>
+            <p><strong>Date:</strong> Spring 2026</p>
+            <p><strong>Study Area:</strong> Finnish Lakeland</p>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Software &amp; Tools</h3>
+          
+             <p>QGIS Spatial Suite</p>
+            <p>Google Earth Engine API</p>
+            
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Downloads</h3>
+            <a href="#" class="button">Download Map Dataset (PDF)</a>
+            <br><br>
+            <a href="#" class="button" style="background:#10b981;">View Active Raster Layer</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 GIS Student Portfolio &bull; Academic Track Report
+    </div>
+  </footer>
+
+</body>
+</html>
